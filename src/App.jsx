@@ -1,45 +1,39 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
-import { Header } from './assets/components/Header/Header'
-import { Footer } from './assets/components/Footer/Footer'
-import { ItemListContainer } from './assets/components/ItemListContainer/ItemListContainer'
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import "./App.css";
+import { Footer } from "./components/Footer/Footer";
+import { Header } from "./components/Header/Header";
+import { ItemDetailContainer } from "./components/ItemDetailContainer/ItemDetailContainer";
+import { ItemListContainer } from "./components/ItemListContainer/ItemListContainer";
+import { CartProvider } from "./context/CartContext/CartProvider";
+import { Cart } from "./components/Cart/Cart";
+import { ProductFormContainer } from "./components/adminComponents/ProductFormContainer/ProductFormContainer";
 
 function App() {
-  const arrayProductos = [
-    {
-      id: 1,
-      nombre: "Remera",
-      precio: 20000,
-      descripcion: "Remara de algodon",
-    },
-
-    {
-      id: 2,
-      nombre: "Pantalon",
-      precio: 8000, descripcion: "Pantalon de jean",
-    },
-    {
-      id: 3,
-      nombre: "Zapatillas",
-      precio: 110000,
-      descripcion: "Zapatillas deportivas",
-    }
-  ];
-  //const prod = { nombre: "REmera", precio: 10000, descripcion: "lalala"};
-
   return (
     <>
-      <div>
-        <Header />
-        <ItemListContainer titulo={"Bienvenidos a la tienda de Embark"}
-          productos={arrayProductos}
-        />
-        <Footer />
-      </div>
+      <BrowserRouter>
+        <CartProvider>
+          <Header />
+          {/* Dejamos fuera del Routes lo que queremos que no se vuelva a renderizar al navegar */}
+          <Routes>
+            <Route
+              path="/"
+              element={<ItemListContainer titulo={"Bienvenidos"} />}
+            />
+            <Route
+              path="/category/:category"
+              element={<ItemListContainer titulo={"Bienvenidos"} />}
+            />
+            <Route path="/detail/:id" element={<ItemDetailContainer />} />
+            <Route path="/carrito" element={<Cart />} />
+            <Route path="/admin" element={<ProductFormContainer />} />
+          </Routes>
+          {/* Dejamos fuera del Routes lo que queremos que no se vuelva a renderizar al navegar */}
+          <Footer />
+        </CartProvider>
+      </BrowserRouter>
     </>
   );
 }
 
-export default App
+export default App;
